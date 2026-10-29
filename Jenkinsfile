@@ -3,7 +3,7 @@
 // the agent needs Chrome (or Firefox/Edge) installed for the UI stage. Works on Windows (bat) and Linux/Mac (sh).
 
 // One helper so every stage runs on any operating system.
-def run(String command) {
+def runCmd(String command) {
     if (isUnix()) {
         sh command
     } else {
@@ -15,7 +15,7 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JDK-17'
+        jdk 'JDK-25'
         maven 'Maven-3.9'
     }
 
@@ -49,14 +49,14 @@ pipeline {
         stage('Compile') {
             steps {
                 // Fail fast on compile errors before spending minutes on tests.
-                run 'mvn -B -q clean test-compile'
+                runCmd 'mvn -B -q clean test-compile'
             }
         }
 
         stage('API + DB tests') {
             // Fast, browser-free gate: if the business rules or the data are broken, there is no point opening a browser.
             steps {
-                run 'mvn -B test -DsuiteFile=api.xml'
+                runCmd 'mvn -B test -DsuiteFile=api.xml'
             }
         }
 
@@ -66,7 +66,7 @@ pipeline {
                 // The nightly cron run has no parameters, so it falls back to the first choice; force regression there.
                 script {
                     def suite = (currentBuild.getBuildCauses('hudson.triggers.TimerTrigger$TimerTriggerCause')) ? 'regression.xml' : params.SUITE
-                    run "mvn -B test -DsuiteFile=${suite} -Dheadless=true -Dbrowser=${params.BROWSER} -Dretry=${params.RETRY}"
+                    runCmd "mvn -B test -DsuiteFile=${suite} -Dheadless=true -Dbrowser=${params.BROWSER} -Dretry=${params.RETRY}"
                 }
             }
         }
