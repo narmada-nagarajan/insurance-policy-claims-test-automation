@@ -1,0 +1,25 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!-- Full regression (nightly / release gate). Sequential by default; to parallelise UI tests use
+     parallel="classes" thread-count="2" (DriverFactory is ThreadLocal, ScenarioContext is per scenario). -->
+<suite name="Insurance Regression" verbose="1">
+    <listeners>
+        <listener class-name="com.insurance.listeners.TestListener"/>
+        <listener class-name="com.insurance.listeners.RetryTransformer"/>
+    </listeners>
+    <test name="UI - CRAFT end-to-end scenarios">
+        <classes>
+            <class name="com.insurance.tests.ui.CraftE2ETest"/>
+        </classes>
+    </test>
+    <test name="UI - Selenium concepts">
+        <classes>
+            <class name="com.insurance.tests.ui.UiConceptsTest"/>
+        </classes>
+    </test>
+    <test name="API and DB">
+        <classes>
+            <class name="com.insurance.tests.api.ApiTests"/>
+            <class name="com.insurance.tests.db.DbValidationTests"/>
+        </classes>
+    </test>
+</suite>

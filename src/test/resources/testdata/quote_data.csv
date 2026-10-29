@@ -1,0 +1,6 @@
+# expectedPremium = coverage x product rate x age factor (HEALTH 2%, AUTO 3%, HOME 1.5%; age <25: 1.2, 25-50: 1.0, >50: 1.3)
+DataSetId,coverageType,coverageAmount,expectedPremium
+Q_HEALTH_100K,HEALTH,100000,2000.00
+Q_AUTO_100K,AUTO,100000,3900.00
+Q_HOME_200K_ADULT,HOME,200000,3000.00
+Q_HOME_200K_MINOR,HOME,200000,3600.00

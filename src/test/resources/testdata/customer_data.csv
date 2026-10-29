@@ -1,0 +1,6 @@
+# {{age:N}} = date of birth giving exactly N years today; {{unique}} = per-scenario token for unique emails
+DataSetId,fullName,dob,email,phone,state,acceptTerms,expectedMessage
+CUST_ADULT_35,Ravi Kumar,{{age:35}},ravi.{{unique}}@example.com,9876543210,Tamil Nadu,Yes,
+CUST_SENIOR_60,Meena Iyer,{{age:60}},meena.{{unique}}@example.com,9876500001,Karnataka,Yes,
+CUST_MINOR_17,Arun Raj,{{age:17}},arun.{{unique}}@example.com,9876500002,Kerala,Yes,
+CUST_NO_TERMS,Kavya Nair,{{age:30}},kavya.{{unique}}@example.com,9876500003,Kerala,No,Please accept the terms and conditions

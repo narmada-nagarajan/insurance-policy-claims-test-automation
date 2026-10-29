@@ -1,0 +1,22 @@
+# Keyword-driven scenarios: each row is one step. DataRef = <datafile>/<DataSetId>
+TestCaseId,Step,Keyword,DataRef
+TC_E2E_01,1,CreateCustomer,customer_data/CUST_ADULT_35
+TC_E2E_01,2,GetQuote,quote_data/Q_HEALTH_100K
+TC_E2E_01,3,IssuePolicy,
+TC_E2E_01,4,SubmitClaim,claim_data/CLAIM_20K
+TC_E2E_01,5,ValidateOutcome,expected_data/EXP_APPROVED
+TC_E2E_02,1,CreateCustomer,customer_data/CUST_SENIOR_60
+TC_E2E_02,2,GetQuote,quote_data/Q_AUTO_100K
+TC_E2E_02,3,IssuePolicy,
+TC_E2E_02,4,SubmitClaim,claim_data/CLAIM_60K
+TC_E2E_02,5,ValidateOutcome,expected_data/EXP_REVIEW
+TC_E2E_03,1,CreateCustomer,customer_data/CUST_MINOR_17
+TC_E2E_03,2,GetQuote,quote_data/Q_HOME_200K_MINOR
+TC_E2E_03,3,IssuePolicy,
+TC_E2E_03,4,ValidateOutcome,expected_data/EXP_REJECTED_AGE
+TC_E2E_04,1,CreateCustomer,customer_data/CUST_ADULT_35
+TC_E2E_04,2,GetQuote,quote_data/Q_HOME_200K_ADULT
+TC_E2E_04,3,IssuePolicy,
+TC_E2E_04,4,SubmitClaim,claim_data/CLAIM_250K
+TC_E2E_04,5,ValidateOutcome,expected_data/EXP_REJECTED_CLAIM
+TC_UI_NEG_01,1,CreateCustomer,customer_data/CUST_NO_TERMS

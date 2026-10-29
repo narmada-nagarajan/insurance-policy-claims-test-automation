@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Customer Details</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+  <h1 id="pageTitle">Customer Details</h1>
+  <form id="customerForm" novalidate>
+    <label for="fullName">Full name</label><input id="fullName" name="fullName">
+    <label for="dob">Date of birth (yyyy-mm-dd)</label><input id="dob" name="dob" placeholder="yyyy-mm-dd">
+    <label for="email">Email</label><input id="email" name="email">
+    <label for="phone">Phone</label><input id="phone" name="phone">
+    <label for="state">State</label>
+    <select id="state" name="state">
+      <option value="">-- Select --</option>
+      <option value="Tamil Nadu">Tamil Nadu</option>
+      <option value="Karnataka">Karnataka</option>
+      <option value="Kerala">Kerala</option>
+      <option value="Maharashtra">Maharashtra</option>
+    </select>
+    <iframe id="termsFrame" src="/terms.html" title="Terms"></iframe>
+    <p><a id="privacyLink" href="/privacy.html" target="_blank">View privacy policy</a></p>
+    <button id="saveCustomer" type="submit">Save customer</button>
+  </form>
+  <div id="msg" role="alert"></div>
+  <a id="continueToQuote" class="btn" style="display:none" href="#">Get a quote</a>
+  <script src="/app.js"></script>
+  <script>
+    window.termsAccepted = false;
+    document.getElementById('customerForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+      if (!document.getElementById('fullName').value.trim()) { setMsg('Full name is required', false); return; }
+      if (!window.termsAccepted) { setMsg('Please accept the terms and conditions', false); return; }
+      const r = await api('POST', '/api/customers', {
+        fullName: document.getElementById('fullName').value,
+        dob: document.getElementById('dob').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        state: document.getElementById('state').value
+      });
+      if (r.status === 201) {
+        document.getElementById('msg').innerHTML = 'Customer saved successfully. ID: <span id="customerId">' + r.data.id + '</span>';
+        document.getElementById('msg').className = 'msg ok';
+        const next = document.getElementById('continueToQuote');
+        next.href = '/quote.html?customerId=' + r.data.id;
+        next.style.display = 'inline-block';
+      } else {
+        setMsg(r.data ? r.data.error : 'Unexpected error', false);
+      }
+    });
+  </script>
+</body></html>

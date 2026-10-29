@@ -1,0 +1,4 @@
+DataSetId,amount,description
+CLAIM_20K,20000,Hospitalisation bill
+CLAIM_60K,60000,Major surgery
+CLAIM_250K,250000,Total loss claim

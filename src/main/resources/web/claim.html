@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Submit Claim</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+  <h1 id="pageTitle">Submit an Insurance Claim</h1>
+  <p>Policy: <span id="policyRef"></span></p>
+  <label for="claimAmount">Claim amount</label><input id="claimAmount">
+  <label for="claimDescription">Description</label><textarea id="claimDescription" rows="2"></textarea>
+  <button id="submitClaim" type="button">Submit claim</button>
+  <div id="claimResult" style="display:none">
+    Claim <span id="claimId"></span>: <strong id="claimStatus"></strong>
+    <div id="claimMessage"></div>
+  </div>
+  <div id="msg" role="alert"></div>
+  <h2>Claims on this policy</h2>
+  <table id="claimsTable"><thead><tr><th>Claim</th><th>Amount</th><th>Status</th></tr></thead><tbody></tbody></table>
+  <script src="/app.js"></script>
+  <script>
+    document.getElementById('policyRef').textContent = qs('policyId');
+    // The table body is rebuilt on every refresh: old row references go stale (StaleElementReferenceException).
+    async function refreshTable() {
+      const r = await api('GET', '/api/policies/' + qs('policyId') + '/claims');
+      const rows = (r.data || []).map(function (c) {
+        return '<tr><td>' + c.claimId + '</td><td>' + Number(c.amount).toFixed(2) + '</td><td>' + c.status + '</td></tr>';
+      });
+      document.querySelector('#claimsTable tbody').innerHTML = rows.join('');
+    }
+    document.getElementById('submitClaim').addEventListener('click', async function () {
+      const amount = document.getElementById('claimAmount').value;
+      document.getElementById('msg').textContent = ''; document.getElementById('msg').className = '';
+      if (!amount || Number(amount) <= 0) { setMsg('Enter a claim amount greater than 0', false); return; }
+      const r = await api('POST', '/api/claims', {
+        policyId: Number(qs('policyId')), amount: Number(amount),
+        description: document.getElementById('claimDescription').value
+      });
+      if (r.status === 201) {
+        document.getElementById('claimId').textContent = r.data.claimId;
+        document.getElementById('claimStatus').textContent = r.data.status;
+        document.getElementById('claimMessage').textContent = r.data.reason;
+        document.getElementById('claimResult').style.display = 'block';
+        await refreshTable();
+      } else {
+        setMsg(r.data ? r.data.error : 'Unexpected error', false);
+      }
+    });
+    refreshTable();
+  </script>
+</body></html>

@@ -1,0 +1,8 @@
+# Run Manager: which scenarios execute. Set Execute to No to skip a scenario without touching Java.
+TestCaseId,Description,Execute
+TC_E2E_01,Health policy issued and small claim auto-approved,Yes
+TC_E2E_02,Auto policy issued and large claim sent to manual review,Yes
+TC_E2E_03,Underage applicant rejected at underwriting,Yes
+TC_E2E_04,Claim above coverage amount rejected,Yes
+TC_UI_NEG_01,Customer form blocks submit until terms are accepted,Yes
+TC_E2E_05,Reserved: cancel policy then claim (add steps to scenarios.csv to enable),No

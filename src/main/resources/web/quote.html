@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Get a Quote</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+  <h1 id="pageTitle">Get an Insurance Quote</h1>
+  <label for="coverageType">Coverage type</label>
+  <select id="coverageType">
+    <option value="">-- Select --</option>
+    <option value="HEALTH">Health</option>
+    <option value="AUTO">Auto</option>
+    <option value="HOME">Home</option>
+  </select>
+  <label for="coverageAmount">Coverage amount</label><input id="coverageAmount">
+  <button id="calculate" type="button">Calculate premium</button>
+  <div id="loader" class="loader" style="display:none">Calculating premium...</div>
+  <div id="quoteResult" style="display:none">
+    Quote <span id="quoteId"></span> &ndash; Premium: <strong id="premium"></strong>
+  </div>
+  <div id="msg" role="alert"></div>
+  <a id="continueToPolicy" class="btn" style="display:none" href="#">Proceed to policy</a>
+  <script src="/app.js"></script>
+  <script>
+    document.getElementById('calculate').addEventListener('click', async function () {
+      const type = document.getElementById('coverageType').value;
+      const amount = document.getElementById('coverageAmount').value;
+      document.getElementById('msg').textContent = ''; document.getElementById('msg').className = '';
+      if (!type) { setMsg('Please select a coverage type', false); return; }
+      if (!amount || Number(amount) <= 0) { setMsg('Enter a coverage amount greater than 0', false); return; }
+      document.getElementById('loader').style.display = 'block';
+      const r = await api('POST', '/api/quotes', { customerId: Number(qs('customerId')), coverageType: type, coverageAmount: Number(amount) });
+      await sleep(800); // simulates a slow premium engine: tests must WAIT, not sleep
+      document.getElementById('loader').style.display = 'none';
+      if (r.status === 201) {
+        document.getElementById('quoteId').textContent = r.data.quoteId;
+        document.getElementById('premium').textContent = Number(r.data.premium).toFixed(2);
+        document.getElementById('quoteResult').style.display = 'block';
+        const next = document.getElementById('continueToPolicy');
+        next.href = '/policy.html?quoteId=' + r.data.quoteId;
+        next.style.display = 'inline-block';
+      } else {
+        setMsg(r.data ? r.data.error : 'Unexpected error', false);
+      }
+    });
+  </script>
+</body></html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Issue Policy</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+  <h1 id="pageTitle">Issue Policy</h1>
+  <p>Quote reference: <span id="quoteRef"></span></p>
+  <button id="issuePolicy" type="button">Issue policy</button>
+  <div id="loader" class="loader" style="display:none">Running underwriting checks...</div>
+  <div id="policyResult" style="display:none">
+    Policy <span id="policyId"></span>: <strong id="policyStatus"></strong>
+    <div id="policyMessage"></div>
+  </div>
+  <div id="msg" role="alert"></div>
+  <a id="continueToClaim" class="btn" style="display:none" href="#">Submit a claim</a>
+  <script src="/app.js"></script>
+  <script>
+    document.getElementById('quoteRef').textContent = qs('quoteId');
+    document.getElementById('issuePolicy').addEventListener('click', async function () {
+      document.getElementById('loader').style.display = 'block';
+      const r = await api('POST', '/api/policies', { quoteId: Number(qs('quoteId')) });
+      await sleep(700);
+      document.getElementById('loader').style.display = 'none';
+      if (r.status === 201) {
+        document.getElementById('policyId').textContent = r.data.policyId;
+        document.getElementById('policyStatus').textContent = r.data.status;
+        document.getElementById('policyMessage').textContent = r.data.reason;
+        document.getElementById('policyResult').style.display = 'block';
+        if (r.data.status === 'ISSUED') {
+          const next = document.getElementById('continueToClaim');
+          next.href = '/claim.html?policyId=' + r.data.policyId;
+          next.style.display = 'inline-block';
+        }
+      } else {
+        setMsg(r.data ? r.data.error : 'Unexpected error', false);
+      }
+    });
+  </script>
+</body></html>

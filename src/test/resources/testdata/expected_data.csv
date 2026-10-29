@@ -1,0 +1,6 @@
+# Message columns use "contains" matching; leave claim columns empty when no claim is expected
+DataSetId,policyStatus,policyMessage,claimStatus,claimMessage
+EXP_APPROVED,ISSUED,Underwriting passed,APPROVED,Auto-approved
+EXP_REVIEW,ISSUED,Underwriting passed,UNDER_REVIEW,requires manual review
+EXP_REJECTED_AGE,REJECTED,below minimum age,,
+EXP_REJECTED_CLAIM,ISSUED,Underwriting passed,REJECTED,exceeds coverage

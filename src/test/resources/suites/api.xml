@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!-- No browser needed: REST Assured + SQL checks only. Fastest feedback, good for pull requests. -->
+<suite name="Insurance API and DB" verbose="1">
+    <listeners>
+        <listener class-name="com.insurance.listeners.TestListener"/>
+    </listeners>
+    <test name="API and DB">
+        <classes>
+            <class name="com.insurance.tests.api.ApiTests"/>
+            <class name="com.insurance.tests.db.DbValidationTests"/>
+        </classes>
+    </test>
+</suite>

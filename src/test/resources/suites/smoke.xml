@@ -1,0 +1,19 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!-- Fast gate (about 1 minute): one UI happy path + API health. Run on every commit. -->
+<suite name="Insurance Smoke" verbose="1">
+    <listeners>
+        <listener class-name="com.insurance.listeners.TestListener"/>
+        <listener class-name="com.insurance.listeners.RetryTransformer"/>
+    </listeners>
+    <test name="Smoke">
+        <groups>
+            <run>
+                <include name="smoke"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="com.insurance.tests.ui.SmokeTest"/>
+            <class name="com.insurance.tests.api.ApiTests"/>
+        </classes>
+    </test>
+</suite>
