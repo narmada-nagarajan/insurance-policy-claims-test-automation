@@ -1,6 +1,16 @@
 // Declarative pipeline for the insurance automation framework.
 // Jenkins set-up needed once: Global Tool Configuration -> JDK named "JDK-17" and Maven named "Maven-3.9";
-// the agent needs Chrome (or Firefox/Edge) installed for the UI stage. Use `bat` instead of `sh` on a Windows agent.
+// the agent needs Chrome (or Firefox/Edge) installed for the UI stage. Works on Windows (bat) and Linux/Mac (sh).
+
+// One helper so every stage runs on any operating system.
+def run(String command) {
+    if (isUnix()) {
+        sh command
+    } else {
+        bat command
+    }
+}
+
 pipeline {
     agent any
 
@@ -39,14 +49,14 @@ pipeline {
         stage('Compile') {
             steps {
                 // Fail fast on compile errors before spending minutes on tests.
-                sh 'mvn -B -q clean test-compile'
+                run 'mvn -B -q clean test-compile'
             }
         }
 
         stage('API + DB tests') {
             // Fast, browser-free gate: if the business rules or the data are broken, there is no point opening a browser.
             steps {
-                sh 'mvn -B test -DsuiteFile=api.xml'
+                run 'mvn -B test -DsuiteFile=api.xml'
             }
         }
 
@@ -56,7 +66,7 @@ pipeline {
                 // The nightly cron run has no parameters, so it falls back to the first choice; force regression there.
                 script {
                     def suite = (currentBuild.getBuildCauses('hudson.triggers.TimerTrigger$TimerTriggerCause')) ? 'regression.xml' : params.SUITE
-                    sh "mvn -B test -DsuiteFile=${suite} -Dheadless=true -Dbrowser=${params.BROWSER} -Dretry=${params.RETRY}"
+                    run "mvn -B test -DsuiteFile=${suite} -Dheadless=true -Dbrowser=${params.BROWSER} -Dretry=${params.RETRY}"
                 }
             }
         }
