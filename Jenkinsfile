@@ -1,5 +1,5 @@
 // Declarative pipeline for the insurance automation framework.
-// Jenkins set-up needed once: Global Tool Configuration -> JDK named "JDK-17" and Maven named "Maven-3.9";
+// Jenkins set-up needed once: Global Tool Configuration -> JDK named "JDK-25" and Maven named "Maven-3.9";
 // the agent needs Chrome (or Firefox/Edge) installed for the UI stage. Works on Windows (bat) and Linux/Mac (sh).
 
 // One helper so every stage runs on any operating system.
