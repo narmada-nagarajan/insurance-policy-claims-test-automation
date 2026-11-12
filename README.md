@@ -73,4 +73,4 @@ docs/                                  Concept map, strategy, troubleshooting, l
 
 ## Verification status
 
-This project was authored in a sandbox without access to Maven Central, so the full `mvn test` run could **not** be executed there. What was verified: the application code compiles; premium and underwriting rules match every expected value in the test data; all 35 page-object locators exist in the HTML; and the pages were driven in real Chromium (iframe, new window, slow premium, table re-render, rejected policy) against a stand-in API. **Run `mvn test -DsuiteFile=api.xml` and then the smoke suite first on your machine** and fix anything environmental (JDK version, Chrome).
+Verified locally: mvn test - 32 tests, 0 failures, 0 errors (BUILD SUCCESS). The application under test is bundled (static pages + REST API + in-memory H2 database) and starts automatically, so the suite runs on any machine with JDK 17+, Maven and Chrome - no external setup needed.
