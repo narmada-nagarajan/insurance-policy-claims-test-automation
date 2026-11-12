@@ -1,3 +1,4 @@
+[![CI](https://github.com/narmada-nagarajan/insurance-policy-claims-test-automation/actions/workflows/ci.yml/badge.svg)](https://github.com/narmada-nagarajan/insurance-policy-claims-test-automation/actions/workflows/ci.yml)
 # Insurance Policy and Claims Test Automation Framework
 
 A compact, interview-sized project covering the full insurance workflow through **UI (Selenium), API (REST Assured) and database (SQL)**, built with Java 17, TestNG and Maven in a CRAFT-style hybrid framework (keyword-driven + data-driven + modular).
